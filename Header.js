@@ -1,51 +1,46 @@
-import React ,{useState, useEffect} from 'react'
+import React, { useState } from 'react'
 import './App.css'
+import { Formik } from 'formik';
+
 
 function Header() {
-    const data={name:"",Password:"", email:""};
-    const[inputData,  setInputData]= useState(data)
-    const [flag, setFlag] = useState(false)
-    useEffect(()=>{
-        console.log("Registered")
-    },[flag])
-    function handleData(e){
-    setInputData({...inputData,[e.target.name]:e.target.value})
-    console.log(inputData)
-
-    }
-    function handleSubmit(e){
-        e.preventDefault();
-        if(!inputData.name || !inputData.email || !inputData.Password){
-            alert("All fields are Mandartory")
-    }
-    else{
-        setFlag(true)
-    }
-}
+  const [isLogin, setIsLogin]= useState(false);
+  
+  
   return (
-    <>
-    <pre>{(flag)?<h2 className='ui-define'> Hello {inputData.name}, You've Registered Successfully </h2>:""}</pre>
-
-    <form  className='container' onSubmit={handleSubmit}>
-      <div className='header'>
-      <h2>Registration Form</h2>
-      </div>
-      <div>
-        <input type='text' placeholder="Enter Your Name" name="name" value={inputData.name} onChange={handleData}></input>
-        </div>
-        <div>
-        <input type='text' placeholder="Enter Your Password" name="Password" value={inputData.Password} onChange={handleData}></input>
-        </div>
-        <div>
-        <input type='text' placeholder="Enter Your Email" name="email" value={inputData.email} onChange={handleData}></input>
-        </div>
-        <div>
-        <button type="Submit">Submit</button>
+    <Formik>
+    <div className='container'>
+      <div className='form-container'>
+        <div className='form-toggle'>
+          <button class={isLogin ? 'active' : ""} onClick={() => setIsLogin(true)}>Login</button>
+          <button class={!isLogin ? 'active' : ""} onClick={() => setIsLogin(false)}>SignUp</button>
         </div>
         
-    </form>
-    </>
+        {isLogin ?<>
+      <div className='form'>
+       <h2>Login Form</h2>
+       <input type='email' placeholder='Email'/>
+       <input type='password'placeholder='Password'/>
+       <a href='#'>Forget Password?</a>
+       <button>Login</button>
+       <p>Not a Member? <a href='#' onClick={()=> setIsLogin(false)}>SignUp now</a></p>
+
+    </div>
+    </> : <>
+    <div className='form'>
+       <h2>SignUp</h2>
+       <input type='email' placeholder='Email'/>
+       <input type='password'placeholder='Password'/>
+       <input type='password'placeholder='Confirm Password'/>
+       <button>SignUp</button>
+       </div>
+       
+    
+    </>}
+    </div>
+    </div>
+    </Formik>
+    
   )
 }
-
 export default Header
